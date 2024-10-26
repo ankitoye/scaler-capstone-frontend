@@ -2,33 +2,36 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-
+import NavBar from './components/NavBar'
+import { Routes, Route, Navigate } from "react-router-dom";
+import PageNotFound from './pages/PageNotFound'
+import Home from './pages/Home';
+import ProductDetails from './pages/ProductDetails';
+import Cart from "./pages/Cart";
+import User from './pages/User';
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import PaginationProvider from './contexts/PaginationContext';
+import RequireAuth from './components/RequireAuth'
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <PaginationProvider>
+      <NavBar></NavBar>
+      <Routes>
+        <Route path="/" element={<Home></Home>}> </Route>
+
+        <Route   element={<RequireAuth></RequireAuth>}>
+          <Route path="/cart"  element={<Cart></Cart>}></Route>
+        </Route>
+        <Route path="/product/:id" element={<ProductDetails></ProductDetails>}> </Route>
+        <Route path="/user" element={<User></User>}> </Route>
+        <Route path="/signup" element={<Signup></Signup>}></Route>
+        <Route path="/signin" element={<Login></Login>}></Route>
+        <Route path="/home" element={<Navigate to="/"></Navigate>}></Route>
+        <Route path="*" element={<PageNotFound></PageNotFound>}> </Route>
+      </Routes>
+    </PaginationProvider>
+
   )
 }
 
